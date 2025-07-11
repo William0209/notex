@@ -31,3 +31,16 @@ pre {
     padding: 0;
   }
 }
+
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  all: revert;
+}
+
+.tiptap ul {
+  all: revert;
+}
