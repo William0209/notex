@@ -8,7 +8,6 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { CodeBlockButton } from "@/components/tiptap-ui/code-block-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button";
-import { Spacer } from "@/components/tiptap-ui-primitive/spacer";
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu";
 
 import "../../styles/_keyframe-animations.scss";
@@ -51,7 +50,7 @@ const Index = () => {
           <div className="flex items-center gap-3 p-6 border-b border-blue-50 bg-blue-50/30 flex-wrap">
             <UndoRedoButton action="undo" editor={editor} />
             <UndoRedoButton action="redo" editor={editor} />
-            <Spacer />
+            <div className="h-6 w-px bg-blue-300/60"></div>
             <HeadingDropdownMenu editor={editor} levels={[1, 2, 3, 4]} />
             <MarkButton editor={editor} type="bold" />
             <MarkButton editor={editor} type="italic" />
@@ -60,7 +59,7 @@ const Index = () => {
             <MarkButton editor={editor} type="code" />
             <CodeBlockButton editor={editor} />
             <MarkButton editor={editor} type="underline" />
-            <div className="ml-3 text-sm text-blue-400">Auto-saved</div>
+            <div className="ml-auto text-sm text-blue-400">Auto-saved</div>
           </div>
 
           {/* Editor */}
