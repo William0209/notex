@@ -4,12 +4,16 @@ import React from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import { MarkButton } from "@/components/tiptap-ui/mark-button";
+// import "../../app/styles/_keyframe-animatuions.scss";
+// import "../../app/styles/_variables.scss";
 
 const Index = () => {
   const editor = useEditor({
     extensions: [
       StarterKit,
       Placeholder.configure({
+        emptyEditorClass: "is-editor-empty",
         placeholder: "Write something …",
       }),
     ],
@@ -21,67 +25,30 @@ const Index = () => {
   }
 
   return (
-    <div>
-      <div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+      <div className="max-w-5xl mx-auto p-8">
         {/* Header */}
-        <div>
-          <h1></h1>
-          <p></p>
+        <div className="mb-12 text-center">
+          <h1 className="text-5xl font-light text-blue-900 mb-4">Notex</h1>
+          <p className="text-blue-600/70 text-lg">Simple. Clean. Focused.</p>
         </div>
 
         {/* Note Editor Container */}
-        <div>
-          <div>
-            <button
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={editor.isActive("bold") ? "is-active" : ""}
-            >
-              Toggle bold
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={editor.isActive("italic") ? "is-active" : ""}
-            >
-              Toggle italic
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={editor.isActive("strike") ? "is-active" : ""}
-            >
-              Toggle strike
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-              className={editor.isActive("heading", { level: 1 }) ? "is-active" : ""}
-            >
-              H1
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-              className={editor.isActive("heading", { level: 2 }) ? "is-active" : ""}
-            >
-              H2
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-              className={editor.isActive("heading", { level: 3 }) ? "is-active" : ""}
-            >
-              H3
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-              className={editor.isActive("codeBlock") ? "is-active" : ""}
-            >
-              Toggle code block
-            </button>
-            <div>Auto-saved</div>
+        <div className="bg-white rounded-2xl shadow-sm border border-blue-100 overflow-hidden">
+          <div className="flex items-center gap-3 p-6 border-b border-blue-50 bg-blue-50/30 flex-wrap">
+            <MarkButton type="bold" />
+            <MarkButton type="italic" />
+            <MarkButton type="strike" />
+            <MarkButton type="code" />
+            <MarkButton type="underline" />
+            <div className="ml-auto text-sm text-blue-400">Auto-saved</div>
           </div>
 
           {/* Editor */}
           <EditorContent editor={editor} className="tiptap" />
 
-          <div>
-            <p>Your notes are saved locally in your browser</p>
+          <div className="mt-12 text-center">
+            <p className="text-blue-400 text-sm">Your notes are saved locally in your browser</p>
           </div>
         </div>
       </div>
