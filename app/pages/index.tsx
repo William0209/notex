@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -9,6 +9,7 @@ import { CodeBlockButton } from "@/components/tiptap-ui/code-block-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button";
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu";
+import { saveToLocalStorage, loadFromLocalStorage } from "@/lib/tiptap-utils";
 
 import "../../styles/_keyframe-animations.scss";
 import "../../styles/_variables.scss";
@@ -17,6 +18,8 @@ import "../../styles/_editor.scss";
 // import "@/components/tiptap-node/code-block-node/code-block-node.scss";
 
 const Index = () => {
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -29,8 +32,38 @@ const Index = () => {
         placeholder: "Write something …",
       }),
     ],
+    content: typeof window !== "undefined" ? loadFromLocalStorage() || "" : "",
     immediatelyRender: false,
+    onUpdate: ({ editor }) => {
+      // Debounced auto-save
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+      saveTimeoutRef.current = setTimeout(() => {
+        const content = editor.getHTML();
+        saveToLocalStorage(content);
+      }, 1000); // Save after 1 second of inactivity
+    },
   });
+
+  // Load content when component mounts and editor is ready
+  useEffect(() => {
+    if (editor && typeof window !== "undefined") {
+      const savedContent = loadFromLocalStorage();
+      if (savedContent && savedContent !== editor.getHTML()) {
+        editor.commands.setContent(savedContent);
+      }
+    }
+  }, [editor]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, []);
 
   if (!editor) {
     return null;
